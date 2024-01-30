@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stack>
 #include <unordered_map>
 #include <vector>
 
@@ -38,7 +39,26 @@ bool is_valid_v1(string s) {
   return (stack.size() > 0 ? false : true);
 }
 
-void test(string s) { cout << s << ": " << is_valid_v1(s) << endl; }
+bool is_valid_v2(string s) {
+  stack<char> st;
+  unordered_map<char, char> map = {{'(', ')'}, {'{', '}'}, {'[', ']'}};
+  for (char c : s) {
+    if (c == '(' || c == '{' || c == '[') {
+      st.push(c);
+    } else {
+      if (st.empty() || (c != map[st.top()])) {
+        return false;
+      }
+      st.pop();
+    }
+  }
+  return st.empty();
+}
+
+void test(string s) {
+  cout << "is_valid_v1" << s << ": " << is_valid_v1(s) << endl;
+  cout << "is_valid_v2" << s << ": " << is_valid_v2(s) << endl;
+}
 
 int main() {
   string s1 = "()[]{}";
